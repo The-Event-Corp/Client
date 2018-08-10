@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+  <title>Homepage</title>
+  <script>
+    const access_token = localStorage.getItem('token')
+    if (!access_token) {
+      window.location = 'http://localhost:8080/login.html'
+    }
+  </script>
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fb2264421ec008a297430e9e25f94eb3&auto=format&fit=crop&w=1500&q=80');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2196f3">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand text-white" href="home.html">The Event Corp</a>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link text-white" href="home.html">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#" id="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br>
+  <div class="container">
+    <div id="weather" style="text-align: center"></div>
+    <br>
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card text-center">
+          <div class="card-header bg-warning text-white">
+            <h5>Event</h5>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="home_event.html" class="btn btn-primary">Show Event</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card text-center">
+          <div class="card-header bg-danger text-white">
+            <h5>Meetup</h5>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="home_meetup.html" class="btn btn-primary">Show Meetup</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12">
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12">
+        <br><br><br><br>
+        <div class="card text-center" style="opacity: 0.8;">
+          <div class="card-body">
+            <div id="quote"></div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <div class="col-lg-4 col-md-12 col-sm-12">
+      </div> 
+    </div>
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="logout.js"></script>
+  <script>
+    const url = 'http://localhost:3030/api/darksky'
+    axios.get(url)
+      .then(result => {
+        console.log(result.data.currently)
+        $('#weather').append(`
+          <h5 class="text-white">${result.data.currently.summary}</h5>
+          <img src="http://www.clker.com/cliparts/D/q/H/o/9/m/partly-sunny-weather-icon-md.png" width="100" alt="">
+          <h5 class="text-white">${result.data.currently.temperature} °F</h5>
+        `)
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+    const urlQuote = 'http://localhost:3030/api/quotes'
+    axios.get(urlQuote)
+      .then(quote => {
+        console.log(quote.data[0].content)
+        $('#quote').append(`
+          <h4>${quote.data[0].title}</h4>
+          <p>${quote.data[0].content}</p>
+        `)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  </script>
+</body>
+</html>
